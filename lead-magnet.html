@@ -223,6 +223,14 @@
       sessionStorage.setItem('leadPhone', phoneDigits);
     }catch(err){}
 
+    // تتبع حدث إرسال النموذج في أناليتكس
+    if(typeof gtag === 'function'){
+      gtag('event', 'generate_lead', {
+        'event_category': 'lead_magnet',
+        'event_label': 'form_submit_7_days_guide'
+      });
+    }
+
     // نجهز رسالة واتساب جاهزة لصاحب العمل تتضمن بيانات الزائر
     const message = `مرحبًا، أبي أستلم دليل "7 أيام لزيادة الطول" المجاني.\nالاسم: ${name}\nرقم الجوال: ${phoneDigits}`;
     const waLink = `https://wa.me/${BUSINESS_WA_NUMBER}?text=${encodeURIComponent(message)}`;
@@ -230,6 +238,19 @@
     window.open(waLink, '_blank', 'noopener');
     window.location.href = 'thank-you.html';
   });
+
+  // تتبع حدث الضغط على أيقونة واتساب العائمة
+  const waFloatBtn = document.querySelector('.wa-float');
+  if(waFloatBtn){
+    waFloatBtn.addEventListener('click', function(){
+      if(typeof gtag === 'function'){
+        gtag('event', 'whatsapp_click', {
+          'event_category': 'engagement',
+          'event_label': 'floating_whatsapp_button'
+        });
+      }
+    });
+  }
 </script>
 
 </body>
